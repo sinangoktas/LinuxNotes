@@ -1,0 +1,167 @@
+Notes on Linux Server Proffessional(LPIC-1) 
+
+cat, touch, cp, mv, rm, rm -r, ls, ls -l, 
+
+
+---------------------------------
+
+sudo lxc-create -t ubuntu -n newpc
+
+##
+# The default user is 'ubuntu' with password 'ubuntu'!
+# Use the 'sudo' command to run tasks as root in the container.
+##
+
+
+sudo lxc-ls
+
+sudo lxc-ls --fancy
+
+sudo lxc-start -n newpc -d 
+
+sudo apt-get install openssh-server
+
+ssh ubuntu@10.0.3.129 > pw is "ubuntu"
+
+sudo lxc-destroy -n newpc
+
+
+---------------------------------
+
+
+lsmod | grep lp > to see if the module lp is exist
+cat /pathtofile | grep word > search the file for a word
+
+
+Managing and toubleshooting the boot process
+
+Right shift key(during boot) > access grub menu
+press "e" key > access text editor
+press "c" or ctrl-c > access grub command line
+advanced options > access recovery mode
+
+
+shutdown -h now/5/3
+shutdown -r now/5/3
+
+history > command history
+
+
+---------------------------------
+
+tar -cvf /path/filename* > archives all the files in the present working directory into filename
+tar -czvf /path/filename* > archives and compress all the files in the present working directory into filename
+tar -xvf /path/filename.tar.gz > extracts arcive content into the present working directory
+
+---------------------------------
+
+
+ps aux > running processes
+
+ps aux | grep processname > search for a particular processes
+
+free > available memory
+
+free -h > available memory in human readable format
+
+uptime
+
+top > list resouce hogs
+
+kill or pkill pidOrProcessName > to shot down a process by name ... pkill will kill even the processname is missspelled 
+
+killall processnameOrPid > will do the job nicely
+
+-----------------------------------------------
+
+processname & > forces a process to run in the background
+
+fg jobId > will bring it back to foreground
+
+ctrl-z and bg jobId > interrupt and send back to background
+
+------------------------------------------
+
+lowering the nice value of a process increase its priority
+
+nice value can be set between -20 and 19 - it is 0 by default
+
+nice -10 apt-get update > setting the nice value to 10
+nice --10 apt-get update > setting the nice value to -10
+
+renice -10 -p PID > control nice value after launch > here reducing the nice level
+
+renice does not take a dash as syntax as it is the case in nice
+
+renice 10 -u username > edit user nice value > raising the nice level
+renice -10 -g groupname > edit group nice value > reducing the nice level 
+
+top or ps > to find out the nice values 
+
+
+-------------------------------------------
+
+vi editor
+
+command mode(normal)
+insert mode
+command line mode
+
+to exit >>>  press Esc > press colon(:) > then q or q! + Enter 
+: > command line mode
+i or <Insert>key > insert mode
+<Esc>key > exit insert mode 
+
+
+command line mode ops
+:w(save a file)
+:exit or :wq(exit vim)
+:q(close vi without saving)
+
+command mode
+dw (deletes one word to the right)
+d$ (delete to the end of the line)
+dd (deletee entire line)
+p (paste)
+u (undo)
+yy (copy line)
+ZZ (save and exit)
+h (move to the left)
+l (move to the right)
+j (move down)
+k (move up)
+
+---------------------------------------------
+
+df -h > lists file systems
+df -T > lists file system types
+df -ih > lists free inodes
+du -h > displays space usage by directory
+
+
+
+-------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
