@@ -142,6 +142,63 @@ du -h > displays space usage by directory
 
 -------------------------------------------
 
+lsblk > device designation
+
+cd /mnt 
+sudo mkdir usb-drive > creating a mount point in the mnt director
+sudo mount /dev/sdc1 usb-drive > device sdc1 is mounted to the mountpoint usb-drive
+
+sudo umount sdc > to unmount ... umount ... not unmount 
+
+
+---------------------------------
+
+sudo chown -R ownername filename
+sudo chgrp groupname filename
+
+permission representation
+
+r   w   x
+4   2   1
+
+for example 777 would mean all users have r, w and x rights
+sudo chmod 666 filename > would take execute power from all users 
+
+sudo chmod o-w filename > others stripped off write power on the object
+sudo chmod o+w filename > others given back the write power now 
+
+user classes > u owner, g group, o other
+
+
+chmod u+s filename > gives user temporary owenership
+chmod g+s filename
+
+chmod +t directory_name > protects files or directory from change or being deleted by other users
+
+umask > default value when a file or directory receive when it is created
+
+umask > 0002
+umask 0022 > you can reset the umask 
+777(rwx rwx rwx) - 022 = 755(rwx r-x r-x)
+
+---------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
