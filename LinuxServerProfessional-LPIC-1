@@ -1,6 +1,20 @@
 Notes on Linux Server Proffessional(LPIC-1) 
 
-cat, touch, cp, mv, rm, rm -r, ls, ls -l, 
+
+
+cat, touch, echo, cp, mv, rm, rm -r, ls, ls -l, mkdir 
+
+cd target, cd .. > to up, cd ~ > to home
+
+~/ > home
+
+cat file1 => reading file
+cat file1 file2 => concanates the files
+cat file1 file2 > file3 => redirecting the output of concatination of file1 and file2 into file3
+cat > file1 => a new file created
+cat oldfile > newfile 
+cat file1 >> file2 => appends file1 to file2 
+echo 'some text' >> file => appends the text to file
 
 
 ---------------------------------
@@ -182,6 +196,120 @@ umask 0022 > you can reset the umask
 777(rwx rwx rwx) - 022 = 755(rwx r-x r-x)
 
 ---------------------------------------------
+
+
+/bin core system executables and shells
+/boot bootloader files
+/dev hardware devices
+/etc text-based config files
+/home user home subdirectories
+/lib code libraries
+/media place to mount external devices
+/mnt alternative location for mounting external devices
+/opt program installation files
+/proc pseudo file-system representing processes
+/root root user's home directory
+/run run time data storage 
+/sbin admin binaries
+/srv site-specific data
+/sys system hardware info
+/usr application files
+/var variable data including logs 
+
+/usr/bin non-essential global binaries
+/usr/lib libraries
+/usr/sbin non-essential system binaries
+/usr/share shared application data
+/usr/src application source code
+
+/var/cache application cache data
+/var/lib state information
+/var/log system logs 
+/var/mail user's mailboxes 
+
+
+
+sudo find /etc -name *.conf  > will search the etc directory with files name ending with .conf
+
+sudo locate filename > better solution 
+
+sudo updatedb > updates the database of all system files 
+
+whereis filename > locates the filename
+
+whereis -bms filename > b: binary location m: manual files s: sourcecode 
+whereis -b filename
+whereis -m filename
+whereis -s filename 
+which program_name > will simalarly display the location of the binary of a program 
+type program_name > will show how a particular program will be executed in the current environment - program execution paramiters
+
+
+Linking files
+
+Each file on a linux system is associated with an Inode. The Inode is a data structure that stores the file's attributes and disk block location. Without an inode's data you would not be able to find, much less use a file. It is possible however, for two files to actually share a single inode
+
+You can obviously copy files from one location to another. What this does is create two identical files, each with its own inode pointing to its particular location. If you should edit either one of these files, the other one will, of course, not be affected.  From here on in, they're not related in any way. However, if you don't really want two separate files in two locations, but you just want to be able to access a single file more conveniently, then you can create a link between two locations. From that point, executing or editing the file in one location will cause the linked version to undergo the same changes. They are in effect, synced to each other. There are two types of linked files: symbolic links, which while remaining in sync with each other, maintains separate inodes, and hard links, which actually share a single inode. ps- if you delete the parent file the link version will be removed
+
+######
+
+ln existingfile linkfile > creating a linkfile 
+
+Symbolic links are usually referred to as symlinks. But why should you want to do this?Knowing in advance that We'll often need this file under similar circumstances, We'll create a linked copy so we can easily access and update the link, but have it available in its up to date version in its original location. 
+
+ln -s myfile myfile-soft > creating a symlink (files will have separate inodes. if the parent file(myfile) renamed or deleted, myfile-soft will cease existence. basically myfile-soft points to myfile then myfile points to the inode)
+
+
+Creating a hard link works pretty much exact same way as a symlink, but without adding any argument to the command. 
+
+ln myfile myfile-hard > creating a hard link (shares single inode therefore both looklike unique files, there is no way to tell the difference between them. if the parent file(myfile) renamed, myfile-hard will remain linked, if the parent deleted, myfile-hard will remain. basically myfile and myfile-hard points separately to a shared inode)
+
+
+----------------------------------------------------------------
+
+manage disk quotas
+
+when multiple users use the same resource, you might need to limit the usage of users or groups on vim or nano
+
+sudo quotacheck -avmug > build quota environment
+sudo quotaon -av > enable quota controls 
+sudo quotaoff -a > disable quota controls
+sudo repquota -av > display quota status
+sudo edquota -u username > edit user profile
+sudo edquota -g groupname > edit group profile 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
