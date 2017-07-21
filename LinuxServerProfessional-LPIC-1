@@ -19,7 +19,9 @@ echo 'some text' >> file => appends the text to file
 
 ---------------------------------
 
-sudo lxc-create -t ubuntu -n newpc
+sudo apt-get install lxc
+
+sudo lxc-create -t ubuntu -n lxcyn
 
 ##
 # The default user is 'ubuntu' with password 'ubuntu'!
@@ -31,13 +33,22 @@ sudo lxc-ls
 
 sudo lxc-ls --fancy
 
-sudo lxc-start -n newpc -d 
+sudo lxc-start -n lxcyn -d 
+
+sudo lxc-stop -n lxcyn
+
+
+sudo lxc-attach -n lxcyn > you can get a shell 
+
+sudo lxc-info -n lxcyn
+
+sudo lxc-destroy -n lxcyn
+
 
 sudo apt-get install openssh-server
 
-ssh ubuntu@10.0.3.129 > pw is "ubuntu"
+ssh ubuntu@10.0.x.xx > pw is "xxxxxx"
 
-sudo lxc-destroy -n newpc
 
 
 ---------------------------------
@@ -366,6 +377,68 @@ date > prints the date and time
 cd /etc;cat timezone > find out the time zone
 
 ---------------------------
+
+Databases
+mysql -u root -p
+show databases
+create database communications;
+use communications;
+show tables;
+
+create table complaints (date DATE, email VARCHAR(20), message VARCHAR(250), response VARCHAR(250));
+
+insert into complaints (date, email, message, response) values ("2017-07-21", "joe@cranky.com", "your product stinks", "so what?");
+
+select * from complaints;
+
+insert into complaints (date, email, message) values ("2017-07-21", "jojo@yahoo.com", "hello");
+
+select * from complaints;
+
+select * from complaints where email='joe@cranky.com';
+
+update complaints
+    -> set email='josef@cranky.com'
+    -> where email='joe@cranky.com';
+
+select * from complaints;
+
+select * from complaints order by date; > ascending by default
+
+select * from complaints order by date DESC;
+
+select * from complaints order by date ASC;
+
+create table purchases (customer int(2), item varchar(10), price int(3));
+
+insert into purchases (customer, item, price) values ('1', 'book', '10');
+insert into purchases (customer, item, price) values ('2', 'bike', '110');
+insert into purchases (customer, item, price) values ('3', 'bread', '4');
+insert into purchases (customer, item, price) values ('4', 'fish', '15');
+insert into purchases (customer, item, price) values ('3', 'book', '12');
+
+
+select * from purchases;
+select item, sum(price) from purchases group by item;
+
+
+create table customers (id int(2), name varchar(10));
+
+insert into customers (id, name) values ('1', 'jay');
+insert into customers (id, name) values ('2', 'ali');
+insert into customers (id, name) values ('3', 'tony');
+insert into customers (id, name) values ('4', 'kim');
+
+select * from purchases, customers where purchases.customer=customers.id;
+
+----------------------------------------------
+
+
+
+
+
+
+
 
 
 
