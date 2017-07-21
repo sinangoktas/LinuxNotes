@@ -1,7 +1,6 @@
 Notes on Linux Server Proffessional(LPIC-1) 
 
 
-
 cat, touch, echo, cp, mv, rm, rm -r, ls, ls -l, mkdir 
 
 cd target, cd .. > to up, cd ~ > to home
@@ -15,6 +14,7 @@ cat > file1 => a new file created
 cat oldfile > newfile 
 cat file1 >> file2 => appends file1 to file2 
 echo 'some text' >> file => appends the text to file
+
 
 
 ---------------------------------
@@ -55,8 +55,8 @@ press "c" or ctrl-c > access grub command line
 advanced options > access recovery mode
 
 
-shutdown -h now/5/3
-shutdown -r now/5/3
+shutdown -h now/5/3 > h stands for halt
+shutdown -r now/5/3 > r stands for restart
 
 history > command history
 
@@ -88,11 +88,38 @@ killall processnameOrPid > will do the job nicely
 
 -----------------------------------------------
 
-processname & > forces a process to run in the background
+processname & > forces a process to run in the background. You can keep working on the terminal but the process is attached to terminal
 
-fg jobId > will bring it back to foreground
+disown > to detach from terminal
 
-ctrl-z and bg jobId > interrupt and send back to background
+disown %IndexNumber
+
+jobs > displays the jobs by index
+
+ps > display the process by id
+
+ctrl-z  > interrupt and send back to background
+
+nohup process & > will start the process in the backround and detach it from the terminal 
+
+bg %IndexNumber or bg PID > push the job into background
+
+fg %IndexNumber or fg PID - resume job
+
+kill %IndexNumber or kill PID - Kill the job 
+
+
+
+
+exit > exits the terminal
+
+clear > clears the screen 
+
+evince file.pdf > opens the pdf file1
+
+
+
+
 
 ------------------------------------------
 
@@ -122,8 +149,7 @@ insert mode
 command line mode
 
 to exit >>>  press Esc > press colon(:) > then q or q! + Enter 
-: > command line mode
-i or <Insert>key > insert mode
+: > command line modei or <Insert>key > insert mode
 <Esc>key > exit insert mode 
 
 
@@ -259,7 +285,6 @@ Symbolic links are usually referred to as symlinks. But why should you want to d
 
 ln -s myfile myfile-soft > creating a symlink (files will have separate inodes. if the parent file(myfile) renamed or deleted, myfile-soft will cease existence. basically myfile-soft points to myfile then myfile points to the inode)
 
-
 Creating a hard link works pretty much exact same way as a symlink, but without adding any argument to the command. 
 
 ln myfile myfile-hard > creating a hard link (shares single inode therefore both looklike unique files, there is no way to tell the difference between them. if the parent file(myfile) renamed, myfile-hard will remain linked, if the parent deleted, myfile-hard will remain. basically myfile and myfile-hard points separately to a shared inode)
@@ -277,6 +302,72 @@ sudo quotaoff -a > disable quota controls
 sudo repquota -av > display quota status
 sudo edquota -u username > edit user profile
 sudo edquota -g groupname > edit group profile 
+
+
+
+--------------------------------------------------
+
+user=myname > create asystem variable
+export user > makes the variable globally available
+unset user
+alias printtz="cd /etc;cat timezone"
+unalias printtz
+function myfunc() { ls -l &1 }
+unset -f myfunc
+
+ls | grep file && cat file > both executes to the right only the first comman succeed
+ls | grep file || cat file > both executes to the right only the first comman fails
+ls | grep file ; cat file > executes both in all cases
+
+script files
+filename.sh
+chmod +x filename.sh > need to be executable
+./filename.sh > to execute
+
+sample file
+#!/bin/bash > start with shebang line
+echo "Today's date is: "
+date
+exit 0
+
+
+read answer > read command will read the user input(string) and assign it to the variable answer. 
+
+declare -i number > need to declare if you want to work with numbers
+
+simple file 
+echo "would you like to know the time? "
+read answer
+#assume we typed yes
+echo answer
+echo "ok, it is "
+date
+exit 0
+
+
+simple file 
+#!/bin/bash
+declare -i n1
+declare -i n2
+declare -i total
+echo "whats n1? "
+read n1
+echo "whats n2? "
+read n2
+total=n1+n2
+echo "they equal " $total
+exit 0
+
+
+----------------
+
+
+date > prints the date and time 
+cd /etc;cat timezone > find out the time zone
+
+---------------------------
+
+
 
 
 
