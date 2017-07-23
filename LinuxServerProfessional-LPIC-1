@@ -432,6 +432,161 @@ insert into customers (id, name) values ('4', 'kim');
 select * from purchases, customers where purchases.customer=customers.id;
 
 ----------------------------------------------
+adding a desktop to an instance on aws using vnc server
+
+after creating a new instance (we created an ubuntu instance)
+ps - make sure you add a security group for vnc - using default port 5901
+
+ssh-in to terminal session to setup our graphic desktop
+
+ssh -i keyfile.pem instancetype@ipaddress
+
+"if permission denied 
+sudo chmod 400 filename(keyfile.pem) 
+or
+sudo chmod 600 filename(keyfile.pem)"
+
+add user which will be the owner of the vnc hosting session and assign pw
+sudo useradd -m username
+sudo passwd username > set password
+
+sudo usermod -aG admin username
+add the user to the admin group
+
+switch users to make the new user our user on vnc
+su username
+
+to allow password based access to our system
+sudo nano /etc/ssh/sshd_config
+scroll down to password autantication and change the no value to yes
+
+need to restart so the change can take effect
+sudo service ssh restart
+
+
+we are now ready to install the software that ubuntu will need to host graphic session
+sudo apt-get install ubuntu-desktop
+
+to permit graphic hosting session
+sudo apt-get install vnc4server 
+
+
+vncserver
+to run the vnc server
+
+set password when prompted and remember!
+
+vncserver -kill :1
+to stop the vnc server since we nedd to make change on the congig file 
+
+ls -a 
+to see the dot files
+
+cd .vnc
+we are now in .vnc directory
+
+nano xstartup
+uncomment the second and third commented lines and add 'sh' after exec in the third lines
+unset SESSION_MANAGER
+exec sh /etc/X11/xinit/xinitrc
+
+vncserver 
+to start the vnc back
+
+go back to local computer and use remina remote desktop client
+
+create a new desktop +New
+name - aws
+Protocol - VNC Virtual Network computing
+Server - aws instance's public ipaddress plus :1
+like 35.176.115.73:1
+username
+
+click connect 
+
+provide password when prompted
+
+you are in the gui desctop on the amazon cloud now
+
+
+----------------------------------------------------
+
+
+cd /home
+sudo useradd -m terry
+sudo passwd terry
+
+sudo passwd terry
+
+cat /etc/passwd | grep terry
+
+sudo usermod -m -d /home/newdir terry
+sets the new home directory of the user terry as /home/newdir
+
+sudo usermod -c "GuestUser" terry
+will add the full name for the user 'terry' as 'GuestUser'
+
+cat /etc/passwd | grep terry
+confirm the above change
+
+sudo useradd -e terry 
+sets the expiry date for the account
+
+sudo useradd -G -m sudo Max
+adding Max as admin to the group m
+
+look into below commands
+-p encrypted password management
+-s specifying default shell for the user
+-u os --uid specifying user id manually
+
+sudo userdel -r terry
+delete the user along with the mail spool if there is one
+
+-e (or --expiredate) sets expiry date
+-G (or --groups) add or remove group membership
+-l (or --login) change login name
+-L (or --lock) lock password
+-U (or --unlock) unlock password
+
+
+sudo chage --list Max
+returns the date when Max's account expires
+sudo chage -m 5 Max
+minimum number of days between password changes
+sudo chage -M 5 Max
+change maximum number of days before a new password is required
+sudo chage -W 7 Max
+set the number of days before a password expires
+user will receive a warning message
+
+-m (or --create-home)
+create user with home directory
+-G (or --groups) 
+add user to other groups
+-p (0r --password)
+specify an encrypted password
+openssl-passwd-crypt
+to generate such a password
+-s (or --shell)
+specified the default shell for the user
+-u (or --uid)
+manually specify a userid UID
+
+man useradd 
+more information
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
