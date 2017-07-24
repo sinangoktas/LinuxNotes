@@ -15,6 +15,9 @@ cat oldfile > newfile
 cat file1 >> file2 => appends file1 to file2 
 echo 'some text' >> file => appends the text to file
 
+less filename 
+less command is used to view files instead of opening the file
+
 
 
 ---------------------------------
@@ -576,9 +579,421 @@ manually specify a userid UID
 man useradd 
 more information
 
+-----------------------------------------
+
+sudo groupadd newname
+sudo groupdel newname
+sudo groupmod -n newername newname
+
+/etc/passwd
+this file contains basic user data like user ids
+/etc/shadow
+contains encrypted version of user password
+/etc/group
+contains information about all system groups
+getent /etc/passwd
+displays data directly from any of its user data files
+/etc/skel
+contains files you'd like to be automatically included with new user home directories
+
+---------------------------------
+
+locale 
+will display the locale settings
+
+timedatectl
+your locale time details
+
+tzselect
+select your timezone
+
+date
+to print date and time 
+
+/etc/timezome
+
+/usr/share/zoneinfo
+
+---------------------------------
+
+System time
+
+Hardware Clock - System Clock
+
+
+sudo hwclock -r
+displays the current time
+sudo hwclock --hctosys
+will apply the hardware time to system time 
+sudo hwclock --systohc
+will apply the system time to hardware timedatectl
+sudo hwclock --utc
+tells hardware to use the cordinated universal time 
+sudo hwclock --localtime
+applies the local time
+sudo hwclock --set --date="7/20/17 13:10:00"
+manually set the time 
+
+
+sudo ntpdate or (ntpdate-debian)
+manually update the time when
+ntpq -pn
+will display available peerers 
+sudo apt install ntp
+sudo service ntp status
+
+less /etc/ntp.conf
+where the settings kept
+
+stratum 1 -stratum 15
+ideally we connect to a server that is closest to a stratum0 server for lowest latency
+
+/var/lib/ntp/ntp.drift
+keeps the numeric record of the historic drift between our system and the time source
+
+slewing
+is the process of gradually adjusting the time that's not too far from the true time
+
+stepping 
+process of more quickly making that adjustments using larger steps 
+
+insane time  
+is the system time thats more than 1024 seconds off
+
+
+System logging
+blackbox of the system 
+
+cd /var/log
+where most log files are kept in
+
+journalctl
+can be used to read stsyem entries
+
+/etc/systemd/journald.conf
+journal behaviours can be controlled here
+
+logger "text"
+will send a text message to logger file 
+
+logger -p lpr.alert
+can specify the facility and level names
+
+/etc/logrotate.conf
+you can control log rotation
+
+alternate logging systems 
+syslog
+rsyslog
+syslog-ng
+klogd
+
+------------------------------------
+
+
+Mail transfer systems
+
+apt-cache search "mail transport agent" | less
+apt-cache search mailutils | less
+
+sendmail -t tony
+
+/var/mail
+where emails are stored
+
+sudo nano /etc/aliases
+you can add alias group
+
+sudo newaliases
+initialise the mail db
+
+nano ~/.forward
+creates a mail forwarder by creating a .forward file
+
+mailq 
+will display all mails thats currently pending
+
+
+also practice setting up ssmtp server ans send email on terminal
+
+--------------------------------
+
+Printers
+
+http://localhost:631/
+browser interface for managing printers and jobs
+
+
+printing from command line 
+
+lp program draws its settings from its cups configuration and know all about your printers and its drivers
+
+lp mytext.text
+will print a file1
+
+lpq
+will display the que
+
+lprm 545
+will delete a print job
+
+lprm -
+
+lp -d nameOfThePrinterDriver filename
+if more than ne printer on the network
+
+cd /var/log/cups
+print related logs 
+
+cupsreject printername
+will reject new jobs
+
+cupsaccept printername 
+will reopen the printer
+
+
+----------------------------------------
+
+Linux Networking
+
+Network Addressing Protocols
+
+IPv4
+192.168.0.1
+192.168.0 > defines 
+1 > defines the endpoints - nodes:  1 to 254 since 0 and 255 reserved
+
+192.168.1.1 > different subnet 
+1.1 to 1.254
+
+Netmask
+255.255.255.0
+
+CIDR
+192.168.0.0/24
+
+Netmask and CIDR tells routing software which octets are for networks and which for the individual devices
+
+Private NAT networksallowed no direct access to the internet. Accsess is established through a public face IP. 
+
+IPv6 addresses contain 32 bit in eight fields of hexadecimal numbers and promise a virtually unlimited number of unique addresses
+
+TCP Networking
+
+In the previous video we learned about how IP addresses are used to identify network devices. While those addresses do point requests in the right direction, there are still two more things you'll need to specify to ensure successful data transfers, the network protocol and network port. The network protocol defines how devices will communicate with each other, including how to establish connections, organize packets of data, and in some cases, how to compress or encrypt data. The three protocols the LPIC expects you to understand are TCP, UDP, and ICMP.
+
+Perhaps the most common higher level protocol you will use is the Transmission Control Protocol TCP. In fact, the original Internet Protocol Suite, will often be referred to as TCP/IP. Largely because of it's built-in reliability, TCP is used to carry most web traffic, emails, and file transfers. Data is automatically broken down into small packets, transferred, and then reassembled at the target. TCP includes packet verification in its data stream deliveries.
+
+For transfers that don't require error checking, like streaming audio and video or VOIP, the quicker and connection-less User Datagram Protocol UDP is often used, while UDP has no delivery conformation or verification, it does provide checksums.
+
+The Internet Controlled Message Protocol, ICMP, is a very simple way for network devices to quickly exchange some basic information. The ping tool uses ICMP to check if a host is online and available for connectivity. You point ping to an IP or DNS address and it will send small packages with a request that they be echoed back. ping will immediately report its results. Network ports allow a single IP address to be used for multiple purposes. They can also be used to make it harder for unauthorized users to gain access to your resources.
+
+
+There are, by accepted convention, three kinds of network ports. Well known ports, that we'll explore in a minute; ICANN registered ports that have been reserved for specific commercial protocols; and dynamic ports that are available for anyone to use on an ad hoc basis. All well known ports fall between ports one and 1,023.
+
+Network Configuration
+
+Now that we've discussed network addressing and transfer protocols, we'll have to learn how to configure and manage network interfaces and routes to ensure reliable connectivity. Most modern Linux distributions would do a pretty good job of automatically pointing a standard network interface device like an ethernet card to a DHCP server during the installation process. However, there will definitely be times when you'll need a non-standard connectivity profile, and for that, you're going to have to know both what to configure and how.
+
+ifconfig
+ip a
+shows running interfaces
+
+sudo ifup eth1
+sudo ifdown eth1
+sudo ip link set dev eth1 up
+sudo ip link set dev eth1 down
+these will stop or start an interface 
+
+/etc/network/interfaces(Debian/Ubuntu)
+/etc/sysconfig/network-scripts/(Fedora)
+interface informations kept in these files 
+
+ip a add 192.168.1.200/255.255.2555.0 dev eth1
+to set a value for a device from the command line 
+
+To be properly configured, a device needs an IP address and a subnet, both of which we've already discussed, but it also requires a default gateway router address so processes can find their way out of the computer and on to the wider network, and in some cases, an identifiable host name.
+
+
+route
+The route command will display the current system route table
+
+sudo route add default gw 192.168.1.1
+sudo ip route add default via 192.168.1.1
+these for editing routing information
+
+sudo dhclient et1 
+dhclient can be used to manually establish your computer as DHCP client
+
+/etc/hostname
+this file contains your system's host name
+/etc/hosts 
+maps dns names and aliases to IP addresses.
+
+/etc/nsswitch.conf
+points to various kinds of configuration data
+
+
+Amazon Web Services Virtual Private Clouds, VPCs: VPCs are AWS's primary networking architecture and are designed to help you effectively and securely manage all a project's compute resources. Any traffic moving within a VPC or to or from any external networks must successfully pass through a number of layers before it can reach its target, starting from the outer edge as an Internet gateway, which must be referenced by a route table before allowing anything through. Route tables in turn can be connected to individual subnets, whose access is controlled by access control lists, ACLs. Once past an ACL into a subnet, traffic will still fail to reach a computer database instance unless it's allowed by the rules of that instance's security group. And of course, as we've seen, you can further take advantage of various local security tools within an instance, which after all, is nothing more or less than a server.
+
+
+Network DNS (Client side)
+
+sudo apt install dnsutils
+
+host gmail.com
+host 10.0.3.16
+dig gmail.com
+these are for querying
+
+
+Network Troubleshooting	
+
+ping gmail.com (or ping IPAdress)
+to check if the problem is with the connectivity
+
+if there is a problem
+
+ip a 
+route
+to find out your gateway
+
+say your gateway is 10.0.3.1
+
+try now
+ping 10.0.3.1
+if that works then the problem is probably somewhere between the router and your internet provider
+
+
+traceroute google.com
+tracepath google.com
+to track packets along their network journey
+
+
+nc -z -v google.com 80
+ckecks if the port @ google.com is open
+nc -z -v google.com 1-1000
+ckecks a range of ports but this can take a very long time
+netcat can also be used instead of nc
+
+netstat -a | grep smtp
+to confirm that sockets you need are accessible
+
+netstat -s
+shows very useful diagnostic data for each network protocol
 
 
 
+------------------------------------------------
+
+Linux Security
+
+System Security
+
+apt-cache search nameOfTheProgram
+to find out if the program installed
+
+apt-cache search netstat
+
+
+sudo nano /etc/gsadow
+more preffered over sudo su
+this invokes toot powers only for a single command
+
+sudo
+Wheel
+group for sudo users
+
+/etc/sudoers
+file ddefining sudo group powers
+
+sudo usermod -aG sudo steve
+add user to sudo group
+
+sudo chage -M 30 ubuntu
+sets password limits
+can be used to force users to regularly change their passwords
+
+
+Besides controlling system access, you should also regularly monitor the system itself for unusual and suspicious behavior.
+
+chmod
+find
+fuser
+nmap
+last
+w
+who
+lsof
+
+
+However, it's unreasonable to think that you're actually going to do all these things regularly enough to make them useful. It'd be much more realistic to include them in scripts run automatically by cron that will issue notifications of anomalies.
+
+sudo find / -type f -perm -u=s-ls
+sudo find / -type f -perm -u=g-ls
+search for suid or sgid
+
+sudo fuser -v /usr/sbin/apache2
+sudo fuser -v -n tcp 80
+search for processes associated with files or ports
+
+netstat 10.0.3.16
+nmap 10.0.3.16
+both scan network addresses for open ports
+
+last
+w
+who
+displays user login data
+
+lsof -u steve 
+which files are currently open and who is using them 
+
+Network Security
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+ 
 
 
 
